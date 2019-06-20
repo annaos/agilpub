@@ -2,9 +2,12 @@ package com.example.agilpub;
 
 import com.example.agilpub.models.*;
 import com.example.agilpub.models.repositories.*;
+import com.example.agilpub.storage.StorageProperties;
+import com.example.agilpub.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
+@EnableConfigurationProperties(StorageProperties.class)
 public class AgilpubApplication {
 
     public static void main(String[] args) {
@@ -30,9 +34,13 @@ public class AgilpubApplication {
             DocumentRepository documentRepository,
             DocumentVersionRepository documentVersionRepository,
             TagRepository tagRepository,
-            CommentRepository commentRepository
+            CommentRepository commentRepository,
+            StorageService storageService
     ) {
         return args -> {
+            storageService.deleteAll();
+            storageService.init();
+
             Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
                 User user = new User(name, "test", name.toLowerCase() + "@domain.com");
                 userRepository.save(user);

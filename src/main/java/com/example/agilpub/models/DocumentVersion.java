@@ -2,6 +2,7 @@ package com.example.agilpub.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,7 +18,11 @@ public class DocumentVersion {
     private long id;
     private final Date createdDate;
     private final int version;
-    private final String file;//TODO how save files?
+    private String filename;
+
+    //TODO only for com.example.agilpub.controllers.DocumentVersionController.addDocument - maybe delete?
+    @Transient
+    private MultipartFile file;
 
     @OneToMany(mappedBy = "docVersion", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"docVersion", "owner"})
@@ -28,16 +33,16 @@ public class DocumentVersion {
     @JsonIgnoreProperties({"owner", "tags", "versions"})
     private final Document document;
 
-    public DocumentVersion(Document document, String file) {
+    public DocumentVersion(Document document, String filename) {
         this.document = document;
-        this.file = file;
+        this.filename = filename;
         this.version = document.getVersions().size() + 1;
         this.createdDate = new Date();
     }
 
     public DocumentVersion() {
         this.document = null;
-        this.file = null;
+        this.filename = null;
         this.version = 1;
         this.createdDate = new Date();
     }
@@ -45,7 +50,7 @@ public class DocumentVersion {
     @Override
     public String toString() {
         return "DocumentVersion{" +
-                "file='" + file + '\'' +
+                "filename='" + filename + '\'' +
                 '}';
     }
 }
