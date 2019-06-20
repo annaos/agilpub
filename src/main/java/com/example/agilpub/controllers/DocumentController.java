@@ -13,7 +13,7 @@ import java.util.Optional;
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin(origins = "*", maxAge = 3600,
-        allowedHeaders={"x-auth-token", "x-requested-with", "x-xsrf-token"})
+        allowedHeaders={"*"})
 public class DocumentController {
 
     private final DocumentRepository documentRepository;
@@ -31,7 +31,7 @@ public class DocumentController {
 
     @GetMapping("/documents/{userId}")
     public List<Document> getDocuments(@PathVariable String userId) {
-        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new EntityNotFoundException(userId));;
+        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new EntityNotFoundException(userId));
         return (List<Document>) documentRepository.findByOwner(user);
     }
 

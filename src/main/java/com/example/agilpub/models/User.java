@@ -1,15 +1,15 @@
 package com.example.agilpub.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Table
 @Data
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,9 +20,12 @@ public class User implements UserDetails {
     private String password;
     private final String username;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"owner", "tags", "versions"})
     private List<Document> files;
+
     @OneToMany(mappedBy = "owner")
+    @JsonIgnoreProperties("owner")
     private List<Comment> comments;
 
     public User(String username, String password, String email) {
@@ -40,9 +43,6 @@ public class User implements UserDetails {
         this.email = null;
     }
 
-    public Collection<GrantedAuthority> getAuthorities() {
-        return new ArrayList<GrantedAuthority>();
-    }
 
     public String getPassword() {
         return this.password;

@@ -1,5 +1,6 @@
 package com.example.agilpub.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table
 @Data
 public class DocumentVersion {
 
@@ -17,11 +19,13 @@ public class DocumentVersion {
     private final int version;
     private final String file;//TODO how save files?
 
-    @OneToMany(mappedBy = "docVersion")
+    @OneToMany(mappedBy = "docVersion", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"docVersion", "owner"})
     private List<Comment> comments;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="DOCUMENT_ID")
+    @JsonIgnoreProperties({"owner", "tags", "versions"})
     private final Document document;
 
     public DocumentVersion(Document document, String file) {
