@@ -11,9 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -64,12 +66,12 @@ public class DocumentVersionController {
 
         Resource resource = storageService.loadAsResource(documentVersion.getFilename());
 
-        // Try to determine file's content type
+        // Try to determine filename's content type
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            logger.info("Could not determine filename type.");
         }
 
         return ResponseEntity.ok()
@@ -79,12 +81,15 @@ public class DocumentVersionController {
     }
 
 
-    @PostMapping("/documentversions")
+    @PostMapping("/documentversion")
     public void addDocument(@RequestBody DocumentVersion documentVersion) {
-        String filename = String.valueOf(Objects.hash(documentVersion.getFile()));
-        documentVersion.setFilename(filename);
-        storageService.store(documentVersion.getFile());
+        //TODO save with document
         documentVersionRepository.save(documentVersion);
     }
 
+    @PostMapping(value = "/api/files")
+    @ResponseStatus(HttpStatus.OK)
+    public void handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        storageService.store(file);
+    }
 }

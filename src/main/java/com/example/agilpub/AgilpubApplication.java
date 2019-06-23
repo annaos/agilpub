@@ -42,7 +42,8 @@ public class AgilpubApplication {
             storageService.init();
 
             Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
-                User user = new User(name, "test", name.toLowerCase() + "@domain.com");
+                User user = new User(name.toLowerCase());
+                user.setName(name);
                 userRepository.save(user);
             });
             User user = userRepository.findById((long)1).orElseThrow(() -> new EntityNotFoundException("1"));
@@ -70,10 +71,10 @@ public class AgilpubApplication {
 
                 Stream.of("Tag1", "Tag2").forEach(name -> {
                     Tag tag = new Tag(name);
-                    tagRepository.save(tag);
                     tag.addDocument(document);
                     tagRepository.save(tag);
                 });
+                documentRepository.save(document);
             }
             userRepository.findAll().forEach(System.out::println);
             documentRepository.findAll().forEach(System.out::println);

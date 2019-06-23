@@ -20,10 +20,6 @@ public class DocumentVersion {
     private final int version;
     private String filename;
 
-    //TODO only for com.example.agilpub.controllers.DocumentVersionController.addDocument - maybe delete?
-    @Transient
-    private MultipartFile file;
-
     @OneToMany(mappedBy = "docVersion", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"docVersion", "owner"})
     private List<Comment> comments;

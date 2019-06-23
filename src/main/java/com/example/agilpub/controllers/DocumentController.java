@@ -35,9 +35,13 @@ public class DocumentController {
         return (List<Document>) documentRepository.findByOwner(user);
     }
 
-    @PostMapping("/documents")
+    @PostMapping("/document")
     void addDocument(@RequestBody Document document) {
         documentRepository.save(document);
     }
 
+    @GetMapping("/document/{documentId}")
+    public Document getDocumentById(@PathVariable String documentId) {
+        return (Document) documentRepository.findById(Long.parseLong(documentId)).orElseThrow(() -> new EntityNotFoundException(documentId));
+    }
 }
