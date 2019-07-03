@@ -83,7 +83,7 @@ public class DocumentVersionController {
 
     @PostMapping("/documentversion")
     public void addDocument(@RequestBody DocumentVersion documentVersion) {
-        //TODO save with document
+        documentRepository.save(documentVersion.getDocument());
         documentVersionRepository.save(documentVersion);
     }
 

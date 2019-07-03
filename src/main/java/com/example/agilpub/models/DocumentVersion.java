@@ -26,8 +26,8 @@ public class DocumentVersion {
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="DOCUMENT_ID")
-    @JsonIgnoreProperties({"owner", "tags", "versions"})
-    private final Document document;
+    @JsonIgnoreProperties(value = {"owner", "tags", "versions"}, allowSetters = true)
+    private Document document;
 
     public DocumentVersion(Document document, String filename) {
         this.document = document;

@@ -36,8 +36,9 @@ public class DocumentController {
     }
 
     @PostMapping("/document")
-    void addDocument(@RequestBody Document document) {
+    public Document addDocument(@RequestBody Document document) {
         documentRepository.save(document);
+        return document;
     }
 
     @GetMapping("/document/{documentId}")
