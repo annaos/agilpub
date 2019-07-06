@@ -72,6 +72,10 @@ public class DocumentVersionController {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
             logger.info("Could not determine filename type.");
+            contentType = "application/pdf";
+        }
+        if (contentType == null) {
+            contentType = "application/pdf";
         }
 
         return ResponseEntity.ok()
