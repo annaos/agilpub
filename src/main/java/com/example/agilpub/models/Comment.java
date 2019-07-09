@@ -15,7 +15,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String text;
-    private int position; //TODO
+    private String toText;
+    private String selection;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="OWNER_ID")
@@ -23,21 +24,21 @@ public class Comment {
     private final User owner;
 
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="DOCVERSION_ID")
+    @JoinColumn(name="VERSION_ID")
     @JsonIgnoreProperties({"document", "comments"})
-    private final DocumentVersion docVersion;
+    private final DocumentVersion version;
 
     private final Date createdDate;
 
     public Comment(User owner, DocumentVersion documentVersion) {
         this.owner = owner;
-        this.docVersion = documentVersion;
+        this.version = documentVersion;
         this.createdDate = new Date();
     }
 
     public Comment() {
         this.owner = null;
-        this.docVersion = null;
+        this.version = null;
         this.createdDate = new Date();
     }
 

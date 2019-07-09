@@ -20,8 +20,8 @@ public class DocumentVersion {
     private final int version;
     private String filename;
 
-    @OneToMany(mappedBy = "docVersion", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"docVersion", "owner"})
+    @OneToMany(mappedBy = "version", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"version", "owner"})
     private List<Comment> comments;
 
     @ManyToOne(fetch=FetchType.EAGER)

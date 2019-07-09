@@ -59,11 +59,11 @@ public class AgilpubApplication {
                     documentVersionRepository.save(documentVersion);
                 });
 
-                Optional<DocumentVersion> docVersionOptional = documentVersionRepository.findById((long)9);
-                if (docVersionOptional.isPresent()) {
-                    DocumentVersion docVersion = docVersionOptional.get();
+                Optional<DocumentVersion> versionOptional = documentVersionRepository.findById((long)9);
+                if (versionOptional.isPresent()) {
+                    DocumentVersion version = versionOptional.get();
                     Stream.of("MyComment 1", "This is amazing work!").forEach(name -> {
-                        Comment comment = new Comment(user, docVersion);
+                        Comment comment = new Comment(user, version);
                         comment.setText(name);
                         commentRepository.save(comment);
                     });
