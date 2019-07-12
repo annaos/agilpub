@@ -44,7 +44,7 @@ public class CommentController {
     }
 
     @PostMapping("/comment")
-    public Comment addDocument(@RequestBody Comment comment) {
+    public Comment addComment(@RequestBody Comment comment) {
         commentRepository.save(comment);
         return comment;
     }
@@ -52,5 +52,11 @@ public class CommentController {
     @GetMapping("/comment/{commentId}")
     public Comment getCommentById(@PathVariable String commentId) {
         return (Comment) commentRepository.findById(Long.parseLong(commentId)).orElseThrow(() -> new EntityNotFoundException(commentId));
+    }
+
+    @GetMapping("/comment/delete/{commentId}")
+    public void deleteCommentById(@PathVariable String commentId) {
+        Comment comment = (Comment) commentRepository.findById(Long.parseLong(commentId)).orElseThrow(() -> new EntityNotFoundException(commentId));
+        commentRepository.delete(comment);
     }
 }

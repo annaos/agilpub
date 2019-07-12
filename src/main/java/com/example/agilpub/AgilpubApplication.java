@@ -41,7 +41,7 @@ public class AgilpubApplication {
             storageService.deleteAll();
             storageService.init();
 
-            Stream.of("John", "Julie", "Jennifer", "Helen", "Rachel").forEach(name -> {
+            Stream.of("John", "Helen").forEach(name -> {
                 User user = new User(name.toLowerCase());
                 user.setName(name);
                 userRepository.save(user);
