@@ -41,12 +41,12 @@ public class AgilpubApplication {
             storageService.deleteAll();
             storageService.init();
 
-            Stream.of("John", "Helen").forEach(name -> {
+            Stream.of("Alice", "Bob").forEach(name -> {
                 User user = new User(name.toLowerCase());
                 user.setName(name);
                 userRepository.save(user);
             });
-            User user = userRepository.findById((long)1).orElseThrow(() -> new EntityNotFoundException("1"));
+/*            User user = userRepository.findById((long)1).orElseThrow(() -> new EntityNotFoundException("1"));
             Stream.of("Homomorphic Signature", "Algebra", "Combinatorics").forEach(name -> {
                 Document document = new Document(name, user);
                 documentRepository.save(document);
@@ -76,11 +76,12 @@ public class AgilpubApplication {
                 });
                 documentRepository.save(document);
             }
+ */
             userRepository.findAll().forEach(System.out::println);
-            documentRepository.findAll().forEach(System.out::println);
-            documentVersionRepository.findAll().forEach(System.out::println);
-            tagRepository.findAll().forEach(System.out::println);
-            commentRepository.findAll().forEach(System.out::println);
+//            documentRepository.findAll().forEach(System.out::println);
+//            documentVersionRepository.findAll().forEach(System.out::println);
+//            tagRepository.findAll().forEach(System.out::println);
+//            commentRepository.findAll().forEach(System.out::println);
         };
     }
 

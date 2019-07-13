@@ -1,5 +1,6 @@
 package com.example.agilpub.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -18,12 +19,16 @@ public class User {
     private final String username;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"owner", "tags", "versions"})
+    @JsonIgnoreProperties({"owner", "tags", "versions", "scores"})
     private List<Document> files;
 
     @OneToMany(mappedBy = "owner")
     @JsonIgnoreProperties("owner")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "owner")
+    @JsonIgnore
+    private List<Score> scores;
 
     public User(String username) {
         if (username != null && !"".equals(username)) {

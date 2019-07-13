@@ -14,13 +14,15 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String text;
+
+    @Column(length = 9999)
     private String toText;
+    private String text;
     private String selection;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="OWNER_ID")
-    @JsonIgnoreProperties({"files", "comments"})
+    @JsonIgnoreProperties({"files", "comments", "scores"})
     private final User owner;
 
     @ManyToOne(fetch=FetchType.EAGER)

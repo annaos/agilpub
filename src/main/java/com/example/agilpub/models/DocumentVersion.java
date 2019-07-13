@@ -20,13 +20,13 @@ public class DocumentVersion {
     private final int version;
     private String filename;
 
-    @OneToMany(mappedBy = "version", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "version", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"version", "owner"})
     private List<Comment> comments;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="DOCUMENT_ID")
-    @JsonIgnoreProperties(value = {"owner", "tags", "versions"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"owner", "tags", "versions", "scores"}, allowSetters = true)
     private Document document;
 
     public DocumentVersion(Document document, String filename) {
