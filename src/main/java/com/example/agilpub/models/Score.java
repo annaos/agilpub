@@ -15,12 +15,12 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="OWNER_ID")
     @JsonIgnoreProperties({"files", "comments", "scores"})
     private final User owner;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="DOCUMENT_ID")
     @JsonIgnoreProperties(value = {"owner", "tags", "versions", "scores"})
     private final Document document;

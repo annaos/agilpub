@@ -17,7 +17,7 @@ public class Tag {
 
     private String name;
 
-    @ManyToMany(fetch=FetchType.EAGER, mappedBy="tags")
+    @ManyToMany(fetch=FetchType.LAZY, mappedBy="tags")
     @JsonIgnoreProperties({"owner", "tags", "versions"})
     private Set<Document> documents = new HashSet<>();
 
@@ -30,13 +30,26 @@ public class Tag {
     }
 
     public void addDocument(Document document) {
+        if (this.documents == null) {
+            this.documents = new HashSet<Document>();
+        }
         this.documents.add(document);
         document.getTags().add(this);
     }
 
     public void removeDocument(Document document) {
+        if (this.documents == null) {
+            this.documents = new HashSet<Document>();
+        }
         this.documents.remove(document);
         document.getTags().remove(this);
+    }
+
+    public Set<Document> getDocuments() {
+        if (this.documents == null) {
+            this.documents = new HashSet<Document>();
+        }
+        return documents;
     }
 
     @Override

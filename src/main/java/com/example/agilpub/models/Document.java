@@ -24,7 +24,7 @@ public class Document {
     @JsonIgnoreProperties({"files", "comments", "scores"})
     private final User owner;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name="DOCUMENT_TAG",
             joinColumns=@JoinColumn(name="DOCUMENT_ID"),
@@ -32,7 +32,7 @@ public class Document {
     @JsonIgnoreProperties("documents")
     private Set<Tag> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "document", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "document", fetch=FetchType.LAZY)
     @JsonIgnoreProperties({"document", "comments"})
     private List<DocumentVersion> versions;
 
@@ -64,13 +64,26 @@ public class Document {
     }
 
     public void addTag(Tag tag) {
+        if (this.tags == null) {
+            this.tags = new HashSet<Tag>();
+        }
         this.tags.add(tag);
         tag.getDocuments().add(this);
     }
 
     public void removeTag(Tag tag) {
+        if (this.tags == null) {
+            this.tags = new HashSet<Tag>();
+        }
         this.tags.remove(tag);
         tag.getDocuments().remove(this);
+    }
+
+    public Set<Tag> getTags() {
+        if (this.tags == null) {
+            this.tags = new HashSet<Tag>();
+        }
+        return this.tags;
     }
 
     @Override

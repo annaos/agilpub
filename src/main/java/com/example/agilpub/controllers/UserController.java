@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin(origins = "*", maxAge = 3600,
         allowedHeaders={"*"})
 public class UserController {

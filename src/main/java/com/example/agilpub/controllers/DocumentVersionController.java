@@ -2,9 +2,10 @@ package com.example.agilpub.controllers;
 
 import com.example.agilpub.models.Document;
 import com.example.agilpub.models.DocumentVersion;
+import com.example.agilpub.models.Tag;
 import com.example.agilpub.models.repositories.DocumentRepository;
 import com.example.agilpub.models.repositories.DocumentVersionRepository;
-import com.example.agilpub.models.repositories.UserRepository;
+import com.example.agilpub.models.repositories.TagRepository;
 import com.example.agilpub.storage.FileSystemStorageService;
 import com.example.agilpub.storage.StorageService;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
@@ -32,18 +34,18 @@ public class DocumentVersionController {
     private static final Logger logger = LoggerFactory.getLogger(DocumentVersionController.class);
 
     private final DocumentRepository documentRepository;
-    private final UserRepository userRepository;
+    private final TagRepository tagRepository;
     private final DocumentVersionRepository documentVersionRepository;
     private final StorageService storageService;
 
     public DocumentVersionController(
             DocumentRepository documentRepository,
-            UserRepository userRepository,
+            TagRepository tagRepository,
             DocumentVersionRepository documentVersionRepository,
             FileSystemStorageService storageService
     ) {
         this.documentRepository = documentRepository;
-        this.userRepository = userRepository;
+        this.tagRepository = tagRepository;
         this.documentVersionRepository = documentVersionRepository;
         this.storageService = storageService;
     }
@@ -87,8 +89,21 @@ public class DocumentVersionController {
 
     @PostMapping("/documentversion")
     public void addDocument(@RequestBody DocumentVersion documentVersion) {
+        Set<Tag> documentTags = documentVersion.getDocument().getTags();
+        Document document = documentVersion.getDocument();
+        document.setTags(null);
         documentRepository.save(documentVersion.getDocument());
         documentVersionRepository.save(documentVersion);
+
+        for (Tag documentTag : documentTags) {
+            List<Tag> tags = (List<Tag>) tagRepository.findByName(documentTag.getName());
+            if (tags.size()>0) {
+                documentTag = tags.get(0);
+            }
+            documentTag.addDocument(document);
+            tagRepository.save(documentTag);
+            documentRepository.save(document);
+        }
     }
 
     @PostMapping(value = "/api/files")
