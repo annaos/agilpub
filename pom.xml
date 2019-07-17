@@ -11,8 +11,9 @@
     <groupId>com.example</groupId>
     <artifactId>agilpub</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>agilpub</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Agil publication backend</description>
 
     <properties>
         <java.version>1.8</java.version>
